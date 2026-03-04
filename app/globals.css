@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@theme {
+  --color-aero-900: #03060c;
+  --color-aero-800: #06101a;
+  --color-aero-700: #0a1828;
+  --color-aero-600: #0e2238;
+  --color-aero-500: #1a3a5a;
+  --color-aero-400: #2a6a8a;
+  --color-aero-300: #4a9aba;
+  --color-aero-200: #8ac4ea;
+  --color-aero-100: #c0e4fa;
+  --color-shock: #ff6a30;
+  --color-plume: #ff9944;
+  --color-thrust: #00ff88;
+  --color-heat: #ff4466;
+  --color-mach: #6ac4ff;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-aero-900);
+  color: var(--color-aero-100);
+  font-family: var(--font-sans);
+}
+
+/* Leva overrides for aerospace theme */
+[data-leva-theme] {
+  --leva-colors-elevation1: rgba(6, 16, 26, 0.95) !important;
+  --leva-colors-elevation2: rgba(10, 24, 40, 0.95) !important;
+  --leva-colors-elevation3: rgba(14, 34, 56, 0.9) !important;
+  --leva-colors-accent1: #6ac4ff !important;
+  --leva-colors-accent2: #4a9aba !important;
+  --leva-colors-accent3: #2a6a8a !important;
+  --leva-colors-highlight1: #c0e4fa !important;
+  --leva-colors-highlight2: #8ac4ea !important;
+  --leva-colors-highlight3: #4a9aba !important;
+  --leva-fonts-mono: 'JetBrains Mono', monospace !important;
+}
+
+/* Gauge animations */
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px currentColor); }
+  50% { filter: drop-shadow(0 0 12px currentColor); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes data-flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.8; }
+  97% { opacity: 1; }
+  98% { opacity: 0.7; }
+}
+
+.gauge-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.data-readout {
+  animation: data-flicker 8s ease-in-out infinite;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-aero-900);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-aero-500);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-aero-400);
+}
+
+/* Glass morphism panels */
+.glass-panel {
+  background: rgba(6, 16, 26, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(106, 196, 255, 0.15);
+  border-radius: 12px;
+}
+
+.glass-panel-accent {
+  background: rgba(10, 24, 40, 0.9);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(106, 196, 255, 0.25);
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(106, 196, 255, 0.05), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* SBLI pulsing badge */
+@keyframes sbli-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 68, 102, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(255, 68, 102, 0.8); }
+}
+
+.sbli-badge {
+  animation: sbli-pulse 2s ease-in-out infinite;
+}
