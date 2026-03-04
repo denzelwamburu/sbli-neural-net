@@ -10,6 +10,8 @@ const PARTICLE_COUNT = 3000;
 /**
  * GPU-accelerated exhaust plume using InstancedMesh.
  * Particles spawn at nozzle exit and travel downstream with turbulence.
+ * 
+ * Enhanced visibility for light wind tunnel background.
  */
 export function ExhaustPlume() {
     const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -32,14 +34,15 @@ export function ExhaustPlume() {
         }
     }, [particleState]);
 
-    // Color ramp: white-yellow → orange → dark red
+    // Color ramp: white-yellow → orange → deep red
+    // Saturated colors for visibility on light background
     const colorRamp = useMemo(() => {
         return [
-            new THREE.Color('#ffffee'), // Birth
-            new THREE.Color('#ffcc44'), // Young
-            new THREE.Color('#ff8830'), // Mid
-            new THREE.Color('#cc4400'), // Old
-            new THREE.Color('#441100'), // Dying
+            new THREE.Color('#ffffcc'), // Birth - bright
+            new THREE.Color('#ffcc00'), // Young
+            new THREE.Color('#ff6600'), // Mid
+            new THREE.Color('#cc2200'), // Old
+            new THREE.Color('#661100'), // Dying
         ];
     }, []);
 
@@ -80,7 +83,7 @@ export function ExhaustPlume() {
 
                     particleState.lifetimes[i] = 1.0;
                     particleState.ages[i] = 0;
-                    particleState.sizes[i] = 0.02 + Math.random() * 0.04;
+                    particleState.sizes[i] = 0.025 + Math.random() * 0.05;
                 }
                 continue;
             }
@@ -146,10 +149,10 @@ export function ExhaustPlume() {
 
     return (
         <instancedMesh ref={meshRef} args={[undefined, undefined, PARTICLE_COUNT]}>
-            <sphereGeometry args={[1, 4, 4]} />
+            <sphereGeometry args={[1, 6, 6]} />
             <meshBasicMaterial
                 transparent
-                opacity={0.8}
+                opacity={0.9}
                 blending={THREE.AdditiveBlending}
                 depthWrite={false}
                 vertexColors

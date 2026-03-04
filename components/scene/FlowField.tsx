@@ -5,11 +5,13 @@ import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { useSimStore } from '@/simulation/store';
 
-const PARTICLE_COUNT = 300;
+const PARTICLE_COUNT = 400;
 
 /**
  * Flow field streamline particles.
  * Particles trace flow paths through the engine, colored by active visualization mode.
+ * 
+ * Colors optimized for visibility on light wind tunnel background.
  */
 export function FlowField() {
     const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -30,27 +32,31 @@ export function FlowField() {
         }
     }, [particleState]);
 
-    // Color maps for different modes
+    // Color maps for different modes - adjusted for light background visibility
     const colorMaps = useMemo(() => ({
         mach: {
-            slow: new THREE.Color('#1a3a8a'),
-            mid: new THREE.Color('#6ac4ff'),
-            fast: new THREE.Color('#ff4466'),
+            // Deep blue to bright red for clear visibility on gray
+            slow: new THREE.Color('#0033aa'),
+            mid: new THREE.Color('#0088cc'),
+            fast: new THREE.Color('#cc0000'),
         },
         pressure: {
-            slow: new THREE.Color('#4a9aba'),
-            mid: new THREE.Color('#aa44cc'),
-            fast: new THREE.Color('#ff22aa'),
+            // Blue to magenta to red
+            slow: new THREE.Color('#0044aa'),
+            mid: new THREE.Color('#8800aa'),
+            fast: new THREE.Color('#cc0055'),
         },
         temperature: {
-            slow: new THREE.Color('#2244aa'),
-            mid: new THREE.Color('#ffaa22'),
-            fast: new THREE.Color('#ffffff'),
+            // Deep blue to orange to bright yellow-white
+            slow: new THREE.Color('#0022aa'),
+            mid: new THREE.Color('#ff6600'),
+            fast: new THREE.Color('#ffcc00'),
         },
         schlieren: {
-            slow: new THREE.Color('#111111'),
-            mid: new THREE.Color('#667788'),
-            fast: new THREE.Color('#eeffff'),
+            // Grayscale with good contrast on light bg
+            slow: new THREE.Color('#333333'),
+            mid: new THREE.Color('#888888'),
+            fast: new THREE.Color('#eeeeee'),
         },
     }), []);
 
@@ -115,13 +121,13 @@ export function FlowField() {
                 resetParticle(i, particleState);
             }
 
-            // Update instance
+            // Update instance - slightly larger particles for visibility
             dummy.position.set(
                 particleState.positions[i * 3],
                 particleState.positions[i * 3 + 1],
                 particleState.positions[i * 3 + 2]
             );
-            dummy.scale.setScalar(0.025);
+            dummy.scale.setScalar(0.035);
             dummy.updateMatrix();
             meshRef.current.setMatrixAt(i, dummy.matrix);
 
@@ -142,10 +148,10 @@ export function FlowField() {
 
     return (
         <instancedMesh ref={meshRef} args={[undefined, undefined, PARTICLE_COUNT]}>
-            <sphereGeometry args={[1, 6, 6]} />
+            <sphereGeometry args={[1, 8, 8]} />
             <meshBasicMaterial
                 transparent
-                opacity={0.9}
+                opacity={0.95}
                 vertexColors
                 depthWrite={false}
             />

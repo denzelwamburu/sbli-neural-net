@@ -24,17 +24,17 @@ function SceneLoader() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: '#03060c',
+      background: '#e0e2e5',
       fontFamily: 'var(--font-mono)',
-      color: '#4a9aba',
+      color: '#5a7a9a',
       fontSize: '14px',
     }}>
       <div style={{ textAlign: 'center' }}>
         <div style={{
           width: '40px',
           height: '40px',
-          border: '2px solid rgba(106, 196, 255, 0.2)',
-          borderTop: '2px solid #6ac4ff',
+          border: '2px solid rgba(90, 122, 154, 0.3)',
+          borderTop: '2px solid #5a7a9a',
           borderRadius: '50%',
           animation: 'spin 1s linear infinite',
           margin: '0 auto 16px',

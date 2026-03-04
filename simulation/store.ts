@@ -109,7 +109,7 @@ export const useSimStore = create<SimulationStore>()(
         showMachDiamonds: true,
         showSBLIRegion: true,
         showAnnotations: true,
-        wireframe: false,
+        wireframe: true,
         cameraPreset: 'full',
 
         setMach: (v) => { set({ mach: v }); get().recompute(); },

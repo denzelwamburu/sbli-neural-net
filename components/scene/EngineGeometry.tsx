@@ -9,6 +9,8 @@ import { useSimStore } from '@/simulation/store';
  * Procedural scramjet engine geometry.
  * 5 sections: forebody/ramp, cowl, combustor, nozzle, fairing.
  * All geometry rebuilds via useMemo when parameters change.
+ * 
+ * Materials optimized for light wind tunnel background.
  */
 export function EngineGeometry() {
     const rampAngle = useSimStore((s) => s.rampAngle);
@@ -24,11 +26,11 @@ export function EngineGeometry() {
         const fuel = useSimStore.getState().fuelFlowRate;
         if (combustorRef.current) {
             const mat = combustorRef.current.material as THREE.MeshStandardMaterial;
-            mat.emissiveIntensity = fuel * 2.5;
+            mat.emissiveIntensity = fuel * 3;
         }
         if (nozzleLipRef.current) {
             const mat = nozzleLipRef.current.material as THREE.MeshStandardMaterial;
-            mat.emissiveIntensity = 1 + fuel * 3;
+            mat.emissiveIntensity = 1.5 + fuel * 4;
         }
     });
 
@@ -157,10 +159,10 @@ export function EngineGeometry() {
             {/* Compression Ramp */}
             <mesh geometry={rampGeo} castShadow receiveShadow>
                 <meshPhysicalMaterial
-                    color="#1a2a3a"
-                    metalness={0.85}
-                    roughness={0.25}
-                    clearcoat={0.3}
+                    color="#8a9aac"
+                    metalness={0.75}
+                    roughness={0.3}
+                    clearcoat={0.4}
                     wireframe={wireframe}
                 />
             </mesh>
@@ -168,28 +170,28 @@ export function EngineGeometry() {
             {/* Edge highlight on ramp */}
             <lineSegments>
                 <edgesGeometry args={[rampGeo, 30]} />
-                <lineBasicMaterial color="#2a4a6a" linewidth={1} />
+                <lineBasicMaterial color="#5a6a7c" linewidth={1} />
             </lineSegments>
 
             {/* Cowl */}
             <mesh geometry={cowlGeo} castShadow>
                 <meshPhysicalMaterial
-                    color="#223448"
-                    metalness={0.9}
-                    roughness={0.2}
-                    clearcoat={0.4}
+                    color="#9aabbd"
+                    metalness={0.8}
+                    roughness={0.25}
+                    clearcoat={0.5}
                     wireframe={wireframe}
                 />
             </mesh>
 
-            {/* Combustor */}
+            {/* Combustor - darker for heat contrast */}
             <mesh ref={combustorRef} geometry={combustorGeo}>
                 <meshStandardMaterial
-                    color="#1a1210"
+                    color="#3a3a45"
                     metalness={0.7}
-                    roughness={0.6}
+                    roughness={0.5}
                     emissive="#ff4400"
-                    emissiveIntensity={fuelFlowRate * 2}
+                    emissiveIntensity={fuelFlowRate * 2.5}
                     wireframe={wireframe}
                 />
             </mesh>
@@ -197,18 +199,18 @@ export function EngineGeometry() {
             {/* Fuel injector struts */}
             {[0.8, 1.4, 2.0].map((x, i) => (
                 <mesh key={i} geometry={strutGeo} position={[x, (0.4 + rampTipY) / 2, 0]}>
-                    <meshStandardMaterial color="#0a0a0a" metalness={0.8} roughness={0.4} />
+                    <meshStandardMaterial color="#4a5560" metalness={0.8} roughness={0.4} />
                 </mesh>
             ))}
 
             {/* Nozzle */}
             <mesh geometry={nozzleGeo} castShadow>
                 <meshPhysicalMaterial
-                    color="#1a1a2a"
-                    metalness={0.8}
+                    color="#7a8a9c"
+                    metalness={0.75}
                     roughness={0.35}
                     emissive="#ff4400"
-                    emissiveIntensity={fuelFlowRate * 1.2}
+                    emissiveIntensity={fuelFlowRate * 1.5}
                     wireframe={wireframe}
                 />
             </mesh>
@@ -217,19 +219,19 @@ export function EngineGeometry() {
             <mesh ref={nozzleLipRef} position={[4.5, (0.7 + rampTipY - 0.8) / 2, 0]}>
                 <torusGeometry args={[0.5, 0.04, 8, 32, Math.PI]} />
                 <meshStandardMaterial
-                    emissive="#ff8844"
-                    emissiveIntensity={1 + fuelFlowRate * 3}
-                    color="#ff6622"
+                    emissive="#ff6622"
+                    emissiveIntensity={1.5 + fuelFlowRate * 4}
+                    color="#ff8844"
                 />
             </mesh>
 
             {/* Outer fairing */}
             <mesh geometry={fairingGeo}>
                 <meshPhysicalMaterial
-                    color="#1a2838"
-                    metalness={0.9}
-                    roughness={0.2}
-                    clearcoat={0.3}
+                    color="#aabbcf"
+                    metalness={0.8}
+                    roughness={0.25}
+                    clearcoat={0.4}
                     wireframe={wireframe}
                 />
             </mesh>
@@ -237,10 +239,10 @@ export function EngineGeometry() {
             {/* Stabiliser fin */}
             <mesh geometry={finGeo}>
                 <meshPhysicalMaterial
-                    color="#182838"
-                    metalness={0.85}
-                    roughness={0.25}
-                    clearcoat={0.2}
+                    color="#8a9aac"
+                    metalness={0.75}
+                    roughness={0.3}
+                    clearcoat={0.3}
                 />
             </mesh>
 
@@ -248,7 +250,7 @@ export function EngineGeometry() {
             {[-0.5, 0.5, 1.5, 2.5, 3.5].map((x, i) => (
                 <mesh key={`panel-${i}`} position={[x, 0.68, 0]}>
                     <boxGeometry args={[0.01, 0.01, 1.3]} />
-                    <meshBasicMaterial color="#0a1520" />
+                    <meshBasicMaterial color="#4a5560" />
                 </mesh>
             ))}
 
@@ -260,7 +262,7 @@ export function EngineGeometry() {
             ].map(([x, y, z], i) => (
                 <mesh key={`sensor-${i}`} position={[x, y, z]}>
                     <sphereGeometry args={[0.04, 8, 8]} />
-                    <meshStandardMaterial color="#2a4a6a" metalness={0.9} roughness={0.1} emissive="#4a9aba" emissiveIntensity={0.3} />
+                    <meshStandardMaterial color="#3a5a7a" metalness={0.9} roughness={0.1} emissive="#4a9aba" emissiveIntensity={0.5} />
                 </mesh>
             ))}
         </group>

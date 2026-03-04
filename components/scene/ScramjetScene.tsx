@@ -13,11 +13,16 @@ function LoadingFallback() {
     return (
         <mesh>
             <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color="#1a3a5a" wireframe />
+            <meshStandardMaterial color="#6a8aaa" wireframe />
         </mesh>
     );
 }
 
+/**
+ * Main scramjet scene component.
+ * Wind tunnel aesthetic with light gray background for optimal visibility
+ * of shock waves, flow particles, and exhaust plume.
+ */
 export function ScramjetScene() {
     return (
         <Canvas
@@ -25,9 +30,13 @@ export function ScramjetScene() {
             gl={{
                 antialias: true,
                 toneMapping: THREE.ACESFilmicToneMapping,
-                toneMappingExposure: 1.2,
+                toneMappingExposure: 1.1,
             }}
-            style={{ width: '100%', height: '100%' }}
+            style={{ 
+                width: '100%', 
+                height: '100%',
+                background: '#e0e2e5' // Light wind tunnel gray background
+            }}
             dpr={[1, 2]}
         >
             <Suspense fallback={<LoadingFallback />}>
