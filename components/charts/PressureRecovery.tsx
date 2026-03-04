@@ -48,18 +48,8 @@ export function PressureRecoveryChart() {
     }, []);
 
     return (
-        <div>
-            <div style={{
-                fontSize: '10px',
-                fontFamily: 'var(--font-mono)',
-                color: 'rgba(106, 196, 255, 0.5)',
-                letterSpacing: '1px',
-                marginBottom: '6px',
-                fontWeight: 700,
-            }}>
-                PRESSURE RECOVERY vs RAMP ANGLE
-            </div>
-            <ResponsiveContainer width="100%" height={160}>
+        <div style={{ width: '100%', height: '100%' }}>
+            <ResponsiveContainer width="100%" height="90%">
                 <LineChart data={data} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(106, 196, 255, 0.08)" />
                     <XAxis
